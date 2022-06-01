@@ -4,8 +4,9 @@
 *** Developed on 01/06/22 by:       | Shady Amr & Mohamed Khaled.
 """
 from socket import *
+import sys
 serverSocket = socket(AF_INET, SOCK_STREAM)
-serverIP = '0.0.0.0'
+serverIP = '127.0.0.1'
 serverPort = 6789
 serverSocket.bind((serverIP, serverPort))
 serverSocket.listen(1)
@@ -16,16 +17,15 @@ while True:
 	try:
 		message = connectionSocket.recv(1024)
 		print('\n** MESSAGE **:\n', message)
-		filename = message.split()[1].decode('utf-8').strip("/")
+		filename = message.split()[1]
 		print('\n** FILE NAME **:\n', filename)
-		f = open(filename[1:])
+		f = open(filename[1:], 'r', encoding='UTF-8')
 		outputdata = f.read()
-		f.close()
-		connectionSocket.send('HTTP/1.1 200 OK\r\n\r\n')
+		connectionSocket.send(bytes('HTTP/1.1 200 OK\r\n\r\n','UTF-8'))
 		print('\n** LENGTH **:\n', len(outputdata))
 		for i in range(0, len(outputdata)):
-			connectionSocket.send(outputdata[i])
-		connectionSocket.send("\r\n")
+			connectionSocket.send(outputdata[i].encode())
+		connectionSocket.send("\r\n".encode())
 		connectionSocket.close()
 		print("File sending success")
 	except IOError:
