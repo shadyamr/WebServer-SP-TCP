@@ -19,13 +19,13 @@ while True:
 		print('\n** MESSAGE **:\n', message)
 		filename = message.split()[1]
 		print('\n** FILE NAME **:\n', filename)
-		f = open(filename[1:], 'r', encoding='UTF-8')
-		outputdata = f.read()
-		connectionSocket.send(bytes('HTTP/1.1 200 OK\r\n\r\n','UTF-8'))
-		print('\n** LENGTH **:\n', len(outputdata))
-		for i in range(0, len(outputdata)):
-			connectionSocket.send(outputdata[i].encode())
-		connectionSocket.send("\r\n".encode())
+		f = open(filename[1:])
+		connectionSocket.send(b"\nHTTP/1.1 200 OK\n")
+		connectionSocket.send(b"Content-type: text/html\r\n")
+		data = f.read()
+		print('\n** LENGTH **:\n', len(data))
+		for i in range(0, len(data)):
+			connectionSocket.send(bytes(data[i], "UTF-8"))
 		connectionSocket.close()
 		print("File sending success")
 	except IOError:
