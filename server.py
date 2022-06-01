@@ -25,8 +25,8 @@ while True:
 		print('\n** LENGTH **:\n', len(outputdata))
 		for i in range(0, len(outputdata)):
 			connectionSocket.send(outputdata[i])
-		connectionSocket.send("\r\n") 
-		connectionSocket.close() 
+		connectionSocket.send("\r\n")
+		connectionSocket.close()
 		print("File sending success")
 	except IOError:
 		connectionSocket.send(bytes("HTTP/1.1 404 Not Found\r\n\r\n", "UTF-8"))
